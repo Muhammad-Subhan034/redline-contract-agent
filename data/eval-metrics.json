@@ -1,0 +1,155 @@
+{
+  "accuracy": 0.5491071428571429,
+  "testSize": 224,
+  "trainSize": 720,
+  "classes": [
+    "indemnification",
+    "limitation_of_liability",
+    "termination",
+    "confidentiality",
+    "ip_assignment",
+    "payment_terms",
+    "governing_law",
+    "warranty_disclaimer"
+  ],
+  "perClass": [
+    {
+      "label": "indemnification",
+      "precision": 0.45714285714285713,
+      "recall": 0.5714285714285714,
+      "f1": 0.5079365079365079,
+      "support": 28
+    },
+    {
+      "label": "limitation_of_liability",
+      "precision": 0.8484848484848485,
+      "recall": 1.0,
+      "f1": 0.9180327868852459,
+      "support": 28
+    },
+    {
+      "label": "termination",
+      "precision": 0.47368421052631576,
+      "recall": 0.32142857142857145,
+      "f1": 0.3829787234042553,
+      "support": 28
+    },
+    {
+      "label": "confidentiality",
+      "precision": 0.6511627906976745,
+      "recall": 1.0,
+      "f1": 0.7887323943661971,
+      "support": 28
+    },
+    {
+      "label": "ip_assignment",
+      "precision": 1.0,
+      "recall": 0.6071428571428571,
+      "f1": 0.7555555555555555,
+      "support": 28
+    },
+    {
+      "label": "payment_terms",
+      "precision": 0.22807017543859648,
+      "recall": 0.4642857142857143,
+      "f1": 0.3058823529411765,
+      "support": 28
+    },
+    {
+      "label": "governing_law",
+      "precision": 0.38461538461538464,
+      "recall": 0.17857142857142858,
+      "f1": 0.24390243902439024,
+      "support": 28
+    },
+    {
+      "label": "warranty_disclaimer",
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1": 0.4,
+      "support": 28
+    }
+  ],
+  "confusionMatrix": [
+    [
+      16,
+      5,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0
+    ],
+    [
+      0,
+      28,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      9,
+      15,
+      0,
+      4,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      28,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      17,
+      8,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      10,
+      0,
+      0,
+      13,
+      5,
+      0
+    ],
+    [
+      16,
+      0,
+      0,
+      0,
+      0,
+      7,
+      5,
+      0
+    ],
+    [
+      3,
+      0,
+      0,
+      0,
+      0,
+      18,
+      0,
+      7
+    ]
+  ]
+}

@@ -1,26 +1,114 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Redline token system — restraint as the signature: a near-monochrome brief,
+     with red-strikethrough / blue-insertion as the ONLY color, because that's
+     what they mean on a real redlined contract, not decoration. */
+  --paper: #fafaf9;       /* brief paper — warm-neutral, not the default cream */
+  --paper-dim: #f0efec;
+  --ink: #1a1a18;         /* near-black ink */
+  --ink-soft: #57564f;
+  --rule: #d8d6cf;        /* hairline rules */
+  --delete: #ae2a1c;      /* strikethrough red */
+  --delete-soft: #f6e2df;
+  --insert: #1d4ed8;      /* insertion blue */
+  --insert-soft: #dfe6fb;
+  --risk-high: #ae2a1c;
+  --risk-medium: #b5750c;
+  --risk-medium-soft: #f6ead2;
+  --risk-low: #2f6b3a;
+  --risk-low-soft: #e1ecdf;
+
+  --ease: cubic-bezier(0.16, 0.8, 0.24, 1);
+
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-source-sans);
+  --font-mono: var(--font-fira-code);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-delete: var(--delete);
+  --color-delete-soft: var(--delete-soft);
+  --color-insert: var(--insert);
+  --color-insert-soft: var(--insert-soft);
+  --color-risk-high: var(--risk-high);
+  --color-risk-medium: var(--risk-medium);
+  --color-risk-medium-soft: var(--risk-medium-soft);
+  --color-risk-low: var(--risk-low);
+  --color-risk-low-soft: var(--risk-low-soft);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--insert-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--insert);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.mask i {
+  display: inline-block;
+  font-style: normal;
+}
+
+.reveal {
+  opacity: 1;
+}
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.02;
+  mix-blend-mode: multiply;
+  z-index: 60;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask i {
+    transform: none !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

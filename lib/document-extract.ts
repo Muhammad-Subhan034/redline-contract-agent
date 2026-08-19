@@ -4,11 +4,22 @@ const IMAGE_TYPES = new Set(["image/png", "image/jpeg", "image/jpg", "image/webp
 
 export type ExtractResult = { text: string; method: "pdf" | "docx" | "text" | "vision-ocr" };
 
+// pdfjs-dist (via pdf-parse) references DOMMatrix even for plain text extraction,
+// which doesn't exist in Vercel's Node serverless runtime (it's a browser API).
+// Polyfill it once, lazily, only when a PDF actually needs parsing.
+async function ensurePdfPolyfills() {
+  if (typeof (globalThis as Record<string, unknown>).DOMMatrix === "undefined") {
+    const { default: DOMMatrix } = await import("dommatrix");
+    (globalThis as Record<string, unknown>).DOMMatrix = DOMMatrix;
+  }
+}
+
 export async function extractContractText(file: File): Promise<ExtractResult> {
   const name = file.name.toLowerCase();
   const type = file.type;
 
   if (name.endsWith(".pdf") || type === "application/pdf") {
+    await ensurePdfPolyfills();
     const buffer = Buffer.from(await file.arrayBuffer());
     const { PDFParse } = await import("pdf-parse");
     const parser = new PDFParse({ data: buffer });

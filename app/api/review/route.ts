@@ -4,10 +4,11 @@ import { parseClauses } from "@/lib/clause-parse";
 import { classifyClauseType } from "@/lib/classifier";
 import { assessRisk } from "@/lib/risk";
 import { hfChat } from "@/lib/hf";
+import { extractContractText } from "@/lib/document-extract";
 import { insertReview, insertAuditEvent, type ClauseResult } from "@/lib/db";
 
 export const runtime = "nodejs";
-export const maxDuration = 45;
+export const maxDuration = 60;
 
 async function draftRedline(clauseText: string, standard: string, notes: string[]): Promise<string | null> {
   return hfChat([
@@ -24,11 +25,39 @@ async function draftRedline(clauseText: string, standard: string, notes: string[
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => null);
-  const title = (body?.title as string) || "Untitled contract";
-  const text = body?.text as string | undefined;
+  const contentType = req.headers.get("content-type") || "";
+
+  let title = "Untitled contract";
+  let text: string | undefined;
+  let extractionMethod: string | undefined;
+
+  if (contentType.includes("multipart/form-data")) {
+    const form = await req.formData();
+    const file = form.get("file") as File | null;
+    const formTitle = form.get("title") as string | null;
+    if (formTitle) title = formTitle;
+
+    if (!file) {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+    try {
+      const result = await extractContractText(file);
+      text = result.text;
+      extractionMethod = result.method;
+    } catch (err) {
+      return NextResponse.json(
+        { error: err instanceof Error ? err.message : "Could not read that file" },
+        { status: 422 }
+      );
+    }
+  } else {
+    const body = await req.json().catch(() => null);
+    title = (body?.title as string) || title;
+    text = body?.text as string | undefined;
+  }
+
   if (!text || !text.trim()) {
-    return NextResponse.json({ error: "text is required" }, { status: 400 });
+    return NextResponse.json({ error: "No text could be extracted from that input" }, { status: 400 });
   }
 
   const clauses = parseClauses(text);
@@ -81,9 +110,9 @@ export async function POST(req: NextRequest) {
     id: randomUUID(),
     actor: "system",
     action: "reviewed",
-    detail: `Reviewed "${title}" — ${withRedlines.length} clauses, ${highRiskCount} high risk, ${mediumRiskCount} medium risk`,
+    detail: `Reviewed "${title}"${extractionMethod ? ` (source: ${extractionMethod})` : ""} — ${withRedlines.length} clauses, ${highRiskCount} high risk, ${mediumRiskCount} medium risk`,
     timestamp: now,
   });
 
-  return NextResponse.json({ review });
+  return NextResponse.json({ review, extractionMethod });
 }

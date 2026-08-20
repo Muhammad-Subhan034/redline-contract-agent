@@ -4,6 +4,8 @@ import "./globals.css";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import GrainOverlay from "@/components/GrainOverlay";
 import Nav from "@/components/Nav";
+import ScrollProgress from "@/components/ScrollProgress";
+import CursorAccent from "@/components/CursorAccent";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -38,6 +40,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-paper text-ink font-body antialiased">
         <SmoothScrollProvider>
           <GrainOverlay />
+          <ScrollProgress />
+          <CursorAccent />
           <Nav />
           {children}
         </SmoothScrollProvider>

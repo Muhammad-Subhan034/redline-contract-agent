@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import RedlineReveal from "./RedlineReveal";
+import ClauseScanField from "./ClauseScanField";
 
 export default function Hero() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -45,47 +46,52 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={rootRef} className="mx-auto max-w-6xl px-6 pb-20 pt-16 md:pt-24">
-      <div className="grid items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
-        <div>
-          <p
-            data-hero-fade
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-ink/15 px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-ink-soft"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-delete" />
-            Every suggestion cites its source clause
-          </p>
-          <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
-            <span className="mask">
-              <i>Redlines that</i>
-            </span>
-            <br />
-            <span className="mask">
-              <i>cite their source.</i>
-            </span>
-          </h1>
-          <p data-hero-fade className="mt-7 max-w-md text-lg leading-relaxed text-ink-soft">
-            Redline classifies every clause against your playbook, scores its
-            risk, and drafts a suggested edit — linked back to the exact
-            standard it deviates from. No black-box opinions.
-          </p>
-          <div data-hero-fade className="mt-9 flex flex-wrap items-center gap-4">
-            <Link
-              href="/review"
-              className="rounded-sm bg-ink px-6 py-3 font-mono text-[13px] uppercase tracking-wide text-paper transition-transform hover:-translate-y-0.5"
+    <section ref={rootRef} className="relative overflow-hidden">
+      <ClauseScanField />
+      <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 md:pt-24">
+        <div className="grid items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <p
+              data-hero-fade
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-ink-soft"
             >
-              Review a contract →
-            </Link>
-            <Link
-              href="/playbook"
-              className="rounded-sm border border-ink/25 px-6 py-3 font-mono text-[13px] uppercase tracking-wide text-ink transition-colors hover:bg-paper-dim"
-            >
-              View the playbook
-            </Link>
+              <span className="h-1.5 w-1.5 rounded-full bg-delete" />
+              Every suggestion cites its source clause
+            </p>
+            <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
+              <span className="mask">
+                <i>Redlines that</i>
+              </span>
+              <br />
+              <span className="mask">
+                <i>cite their source.</i>
+              </span>
+            </h1>
+            <p data-hero-fade className="mt-7 max-w-md text-lg leading-relaxed text-ink-soft">
+              Redline classifies every clause against your playbook, scores its
+              risk, and drafts a suggested edit — linked back to the exact
+              standard it deviates from. No black-box opinions.
+            </p>
+            <div data-hero-fade className="mt-9 flex flex-wrap items-center gap-4">
+              <Link
+                href="/review"
+                className="group relative overflow-hidden rounded-sm bg-ink px-6 py-3 font-mono text-[13px] uppercase tracking-wide text-paper transition-transform hover:-translate-y-0.5"
+              >
+                <span className="tilt-sheen" aria-hidden="true" />
+                <span className="relative">Review a contract →</span>
+              </Link>
+              <Link
+                href="/playbook"
+                className="group relative overflow-hidden rounded-sm border border-ink/25 px-6 py-3 font-mono text-[13px] uppercase tracking-wide text-ink transition-colors hover:bg-paper-dim"
+              >
+                <span className="tilt-sheen" aria-hidden="true" />
+                <span className="relative">View the playbook</span>
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center md:justify-end">
-          <RedlineReveal />
+          <div className="flex justify-center md:justify-end">
+            <RedlineReveal />
+          </div>
         </div>
       </div>
     </section>

@@ -2,29 +2,38 @@ import evalMetrics from "@/data/eval-metrics.json";
 import { modelMeta } from "@/lib/classifier";
 import StatTile from "@/components/charts/StatTile";
 import ConfusionMatrix from "@/components/charts/ConfusionMatrix";
+import Reveal from "@/components/Reveal";
 
 export default function EvalsPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
-      <p className="font-mono text-[11px] uppercase tracking-widest text-delete">Classifier evals</p>
-      <h1 className="mt-3 font-display text-4xl font-semibold text-ink md:text-5xl">
+      <Reveal as="p" variant="clip-wipe" className="font-mono text-[11px] uppercase tracking-widest text-delete">
+        Classifier evals
+      </Reveal>
+      <Reveal as="h1" delay={0.08} className="mt-3 font-display text-4xl font-semibold text-ink md:text-5xl">
         Eight clause types, honestly scored.
-      </h1>
-      <p className="mt-4 max-w-2xl text-ink-soft">
+      </Reveal>
+      <Reveal as="p" delay={0.14} className="mt-4 max-w-2xl text-ink-soft">
         A TF-IDF + logistic regression model trained on {modelMeta.trainedOn.toLocaleString()}{" "}
         synthetic clauses across 8 types, evaluated on phrasings held out at the
         template level. Chance on 8 classes is 12.5% — this clears it well, but
         legal language genuinely overlaps across clause types, and the numbers
         below show exactly where.
-      </p>
+      </Reveal>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-3">
-        <StatTile label="Accuracy (held-out)" value={`${Math.round(evalMetrics.accuracy * 100)}%`} />
-        <StatTile label="Train / test split" value={`${evalMetrics.trainSize} / ${evalMetrics.testSize}`} />
-        <StatTile label="Vocabulary size" value={String(modelMeta.vocabularySize)} />
+        <Reveal variant="scale-in" delay={0}>
+          <StatTile label="Accuracy (held-out)" value={`${Math.round(evalMetrics.accuracy * 100)}%`} />
+        </Reveal>
+        <Reveal variant="scale-in" delay={0.06}>
+          <StatTile label="Train / test split" value={`${evalMetrics.trainSize} / ${evalMetrics.testSize}`} />
+        </Reveal>
+        <Reveal variant="scale-in" delay={0.12}>
+          <StatTile label="Vocabulary size" value={String(modelMeta.vocabularySize)} />
+        </Reveal>
       </div>
 
-      <div className="mt-10 overflow-hidden rounded-sm border border-ink/12 bg-white">
+      <Reveal className="mt-10 overflow-hidden rounded-sm border border-ink/12 bg-white">
         <table className="w-full border-collapse text-left text-sm">
           <thead className="bg-paper-dim/70 font-mono text-[11px] uppercase tracking-wide text-ink-soft">
             <tr>
@@ -47,9 +56,9 @@ export default function EvalsPage() {
             ))}
           </tbody>
         </table>
-      </div>
+      </Reveal>
 
-      <div className="mt-10 rounded-sm border border-ink/12 bg-white p-7">
+      <Reveal variant="scale-in" className="mt-10 rounded-sm border border-ink/12 bg-white p-7">
         <h2 className="font-display text-2xl font-semibold text-ink">Confusion matrix</h2>
         <p className="mt-1 text-sm text-ink-soft">
           Payment terms and governing law share vocabulary (&ldquo;days&rdquo;,
@@ -59,7 +68,7 @@ export default function EvalsPage() {
         <div className="mt-6">
           <ConfusionMatrix classes={evalMetrics.classes} matrix={evalMetrics.confusionMatrix} />
         </div>
-      </div>
+      </Reveal>
     </main>
   );
 }

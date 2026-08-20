@@ -124,7 +124,8 @@ export default function ReviewForm() {
               if (f) handleFileChange(f);
             }}
             onClick={() => fileInputRef.current?.click()}
-            className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-sm border-2 border-dashed border-ink/25 px-6 py-10 text-center hover:border-insert"
+            data-cursor-hover
+            className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-sm border-2 border-dashed border-ink/25 px-6 py-10 text-center transition-colors duration-300 hover:border-insert"
           >
             <input
               ref={fileInputRef}
@@ -160,9 +161,10 @@ export default function ReviewForm() {
           <button
             onClick={runReview}
             disabled={busy || !canSubmit}
-            className="rounded-sm bg-ink px-5 py-2.5 font-mono text-[13px] uppercase tracking-wide text-paper disabled:opacity-40"
+            className="group relative overflow-hidden rounded-sm bg-ink px-5 py-2.5 font-mono text-[13px] uppercase tracking-wide text-paper disabled:opacity-40"
           >
-            {busy ? "Reviewing…" : "Review contract"}
+            {!busy && <span className="tilt-sheen" aria-hidden="true" />}
+            <span className="relative">{busy ? "Reviewing…" : "Review contract"}</span>
           </button>
           <div className="flex gap-2">
             {SAMPLE_CONTRACTS.map((s) => (
@@ -186,8 +188,12 @@ export default function ReviewForm() {
               {EXTRACTION_LABEL[extractionMethod] ?? extractionMethod}
             </p>
           )}
-          {results.map((r) => (
-            <div key={r.index} className={`rounded-sm border p-5 ${RISK_TONE[r.riskLevel]} bg-white`}>
+          {results.map((r, i) => (
+            <div
+              key={r.index}
+              style={{ animationDelay: `${Math.min(i, 8) * 70}ms` }}
+              className={`result-card rounded-sm border p-5 ${RISK_TONE[r.riskLevel]} bg-white`}
+            >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="font-display text-lg font-semibold text-ink">
                   {r.index}. {r.heading}

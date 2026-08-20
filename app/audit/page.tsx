@@ -1,4 +1,5 @@
 import { listAuditEvents, usingLiveDb } from "@/lib/db";
+import Reveal from "@/components/Reveal";
 
 export const dynamic = "force-dynamic";
 
@@ -7,11 +8,13 @@ export default async function AuditPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-16">
-      <p className="font-mono text-[11px] uppercase tracking-widest text-delete">Audit</p>
-      <h1 className="mt-3 font-display text-4xl font-semibold text-ink md:text-5xl">
+      <Reveal as="p" variant="clip-wipe" className="font-mono text-[11px] uppercase tracking-widest text-delete">
+        Audit
+      </Reveal>
+      <Reveal as="h1" delay={0.08} className="mt-3 font-display text-4xl font-semibold text-ink md:text-5xl">
         Every review, on the record.
-      </h1>
-      <p className="mt-4 max-w-2xl text-ink-soft">
+      </Reveal>
+      <Reveal as="p" delay={0.14} className="mt-4 max-w-2xl text-ink-soft">
         {usingLiveDb
           ? "Reading from the live Postgres review log."
           : "No DATABASE_URL configured — reading from this server's in-memory log, which resets on redeploy."}{" "}
@@ -20,9 +23,9 @@ export default async function AuditPage() {
           /review
         </a>{" "}
         to see entries appear here.
-      </p>
+      </Reveal>
 
-      <div className="mt-10 overflow-hidden rounded-sm border border-ink/12 bg-white">
+      <Reveal variant="scale-in" delay={0.2} className="mt-10 overflow-hidden rounded-sm border border-ink/12 bg-white">
         {events.length === 0 ? (
           <p className="px-6 py-10 text-center text-sm text-ink-soft">No reviews logged yet.</p>
         ) : (
@@ -49,7 +52,7 @@ export default async function AuditPage() {
             </tbody>
           </table>
         )}
-      </div>
+      </Reveal>
     </main>
   );
 }

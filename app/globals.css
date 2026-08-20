@@ -97,11 +97,54 @@ body {
   z-index: 60;
 }
 
+/* Tilt + sheen + glow chrome for genuinely clickable cards (TiltCard.tsx).
+   --glow-color is set per instance so the border/shadow tint matches
+   whichever accent (delete/insert/ink) that surface actually means. */
+.tilt-card {
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.tilt-card:hover {
+  border-color: var(--glow-color, var(--ink));
+  box-shadow: 0 0 34px -16px var(--glow-color, var(--ink));
+}
+.tilt-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateX(-120%);
+  background: linear-gradient(75deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transition: transform 0.7s var(--ease);
+}
+.group:hover .tilt-sheen {
+  transform: translateX(120%);
+}
+
+/* Per-result stagger-in for clause redline results in ReviewForm — the
+   AI "finishing" each clause one at a time, not a single content pop-in. */
+@keyframes result-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.result-card {
+  animation: result-in 0.5s var(--ease) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mask i {
     transform: none !important;
   }
   .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .result-card {
+    animation: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
